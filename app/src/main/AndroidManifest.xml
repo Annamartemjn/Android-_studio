@@ -10,16 +10,15 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MySplashScreen"
+        android:theme="@style/Theme.SmartLab"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MySplashScreen">
+            android:label="SmartLab"
+            android:theme="@style/Theme.MySplashScreen"> <!-- Изменено на основную тему -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

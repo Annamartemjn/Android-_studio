@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.MySplashScreen" parent="Theme.SplashScreen">
         <item name="android:windowBackground">@drawable/splash</item>
-        <item name="windowSplashScreenAnimationDuration">30000</item>
+        <item name="windowSplashScreenAnimationDuration">5000</item>
     </style>
     <style name="Theme.SmartLab" parent="android:Theme.Material.Light.NoActionBar">
 

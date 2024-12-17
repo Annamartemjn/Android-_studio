@@ -1,9 +1,12 @@
 package com.example.smartlab.ui.loyat
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,35 +25,52 @@ import com.example.controls.ui.theme.Components.OnboardHeader
 import com.example.controls.ui.theme.Components.TextButton
 import com.example.smartlab.R
 
+
+
+
 @Composable
-fun OnBoard(modifier: Modifier = Modifier, buttontext: String, headerText:String, descriptionText:String, dodImg:ImageVector, pngImg: ImageBitmap) {
-    Column (modifier = modifier.padding(20.dp)) {
+fun OnBoard(
+    modifier: Modifier = Modifier,
+    buttontext: String,
+    headerText: String,
+    descriptionText: String,
+    dodImg: ImageVector,
+    pngImg: ImageBitmap,
+    context: Context,
+    onButtonClick: () -> Unit
+) {
+
+    Column(modifier = modifier.padding(20.dp)) {
         Row {
+            TextButton(
+                text = buttontext,
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    // Сохранение значения в SharedPreferences
+                    val sharedPreferences: SharedPreferences =
+                        context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putBoolean("isOnBoardingComplete", true).apply()
 
-            TextButton(text = buttontext,
-                modifier = Modifier
-                    .weight(1f)
-
+                    // Выполнение переданного действия
+                    onButtonClick()
+                }
             )
             Image(
                 ImageVector.vectorResource(R.drawable.shape),
                 contentDescription = null,
-                modifier = Modifier
-                    .weight(1f)
+                modifier = Modifier.weight(1f)
             )
         }
         Spacer(Modifier.height(61.dp))
 
         OnboardHeader(
             text = headerText,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(Modifier.height(29.dp))
         OnboardDescription(
             text = descriptionText,
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(Modifier.height(60.dp))
         Image(
@@ -60,24 +80,19 @@ fun OnBoard(modifier: Modifier = Modifier, buttontext: String, headerText:String
                 .width(58.dp)
                 .height(14.dp)
                 .align(Alignment.CenterHorizontally)
-
         )
         Spacer(Modifier.height(106.dp))
         Image(
             pngImg,
             contentDescription = null,
             modifier = Modifier
-                .width(204.dp)
-                .height(200.dp)
+                .fillMaxSize(0.8f)
                 .align(Alignment.CenterHorizontally)
-
         )
-
     }
 }
 
 @Preview
 @Composable
 private fun OnBoardPreview() {
-    OnBoard(buttontext = "Пропустить", headerText = "Анализы", descriptionText = "Экспресс сбор и получение проб", dodImg = ImageVector.vectorResource(R.drawable.group2_1), pngImg = ImageBitmap.imageResource(R.drawable.image3))
 }
