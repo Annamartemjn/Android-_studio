@@ -22,11 +22,27 @@ import androidx.compose.ui.unit.sp
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import java.security.MessageDigest
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
+import com.example.smartlab.ui.layout.CreatePatient
+
 
 @Composable
-fun PinCodeScreen() {
+fun PinCodeScreen(navController1: NavHostController) {
     val context = LocalContext.current
+    val navController = rememberNavController()
 
+    // Указываем startDestination, который будет первым экраном при запуске
+    NavHost(navController = navController, startDestination = "PinCodeScreen") {
+        composable("PinCodeScreen") {
+            PinCodeScreen(navController) // Экран верификации кода
+        }
+        composable("CreatePatient") {
+            CreatePatient() // Главный экран
+        }
+    }
     // Состояние для хранения введенного PIN-кода
     var pinCode by remember { mutableStateOf("") }
 
@@ -117,7 +133,7 @@ fun PinCodeScreen() {
 
                                             // Если введено 4 символа, захэшировать и сохранить
                                             if (pinCode.length == maxPinLength) {
-                                                savePinCode(context, pinCode)
+                                                savePinCode(context, pinCode, navController)
                                             }
                                         }
                                     }
@@ -154,7 +170,7 @@ fun hashPinCode(pin: String): String {
 }
 
 // Функция для сохранения PIN-кода в EncryptedSharedPreferences
-fun savePinCode(context: Context, pinCode: String) {
+fun savePinCode(context: Context, pinCode: String, navController: NavController ) {
     val hashedPin = hashPinCode(pinCode)
 
     val masterKey = MasterKey.Builder(context)
@@ -170,10 +186,14 @@ fun savePinCode(context: Context, pinCode: String) {
     )
 
     sharedPreferences.edit().putString("pin_code", hashedPin).apply()
+    navController.navigate("CreatePatient") {
+        // Этот блок может использоваться для настройки дополнительных параметров навигации, если нужно
+        popUpTo("PinCodeScreen") { inclusive = true } // Удаляем экран верификации из стека
+    }
 }
 
 @Preview
 @Composable
 private fun PinCodeScreenPreview() {
-    PinCodeScreen()
+
 }

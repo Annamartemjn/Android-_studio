@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.smartlab.R
 
 @Composable
@@ -34,15 +36,17 @@ fun SearchPanel(modifier: Modifier = Modifier, ) {
         modifier = modifier
             .fillMaxWidth()
             .height(48.dp)
-            .padding(8.dp)
             .background(Color.White),
         placeholder = {
-            Text("Искать анализы") // Используем @Composable Text для placeholder
+            Text("Искать анализы",
+            fontSize = 16.sp,
+                lineHeight = 20.sp) // Используем @Composable Text для placeholder
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.icons),
-                contentDescription = "Search Icon"
+                contentDescription = "Search Icon",
+                Modifier.size(20.dp)
             ) // Иконка через painterResource
         },
         keyboardOptions = KeyboardOptions(

@@ -22,13 +22,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.smartlab.R
 import com.example.smartlab.ui.Data.EmailRequest
 import com.example.smartlab.ui.Interface.PreferencesHelper
 import com.example.smartlab.ui.Object.RetrofitClient
+import com.example.smartlab.ui.rep.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.compose.*
 
 
 @Composable
@@ -37,6 +42,18 @@ fun CodeVaricetion(modifier: Modifier = Modifier.background(Color.White)) {
     var focusedIndex by remember { mutableStateOf(0) }
     var showNextScreen by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
+    val navController = rememberNavController()
+
+    // Указываем startDestination, который будет первым экраном при запуске
+    NavHost(navController = navController, startDestination = "codeVerification") {
+        composable("codeVerification") {
+            CodeVaricetion(navController as Modifier) // Экран верификации кода
+        }
+        composable("pincode") {
+            PinCodeScreen(navController) // Главный экран
+        }
+    }
 
     // Таймер состояния
     var timer by remember { mutableStateOf(59) }
@@ -63,7 +80,7 @@ fun CodeVaricetion(modifier: Modifier = Modifier.background(Color.White)) {
     if (isCodeComplete) {
         val email = PreferencesHelper(context).getEmail() ?: ""
         val enteredCode = inputValues.joinToString("") // Собираем введённый код из всех полей
-        verifyCode(context, email, enteredCode)
+        verifyCode(context, email, enteredCode, navController)
     }
 
     Column(
@@ -164,8 +181,8 @@ fun EmailConfirmation(email: String) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
             val response = apiService.sendEmailConfirmation(
-                apiKey = "your_api_key_here",  // Replace with your actual API key
-                authHeader = "Bearer your_auth_token_here",  // Replace with your actual auth token
+                apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impyam90bGxod3VkcWVrdXNjZmF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ0MTYwMTYsImV4cCI6MjA0OTk5MjAxNn0.c_Ju428hRkWMYI9Tz-OQ8KMXcRC3Rs3g6cIFLGDR5wk",  // Replace with your actual API key
+                authHeader = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impyam90bGxod3VkcWVrdXNjZmF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ0MTYwMTYsImV4cCI6MjA0OTk5MjAxNn0.c_Ju428hRkWMYI9Tz-OQ8KMXcRC3Rs3g6cIFLGDR5wk",  // Replace with your actual auth token
                 emailRequest = emailRequest
             )
 
@@ -177,7 +194,7 @@ fun EmailConfirmation(email: String) {
 }
 
 // Функция для проверки введенного кода
-fun verifyCode(context: Context, email: String, enteredCode: String) {
+fun verifyCode(context: Context, email: String, enteredCode: String, navController: NavController) {
     // Извлекаем apiKey и authHeader из SharedPreferences
     val preferencesHelper = PreferencesHelper(context)
     val apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impyam90bGxod3VkcWVrdXNjZmF2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ0MTYwMTYsImV4cCI6MjA0OTk5MjAxNn0.c_Ju428hRkWMYI9Tz-OQ8KMXcRC3Rs3g6cIFLGDR5wk"// Замените на ваш фактический API-ключ
@@ -201,9 +218,13 @@ fun verifyCode(context: Context, email: String, enteredCode: String) {
             val response = RetrofitClient.apiService.verifyCode(apiKey, authHeader, emailRequest)
 
             if (response.isSuccessful) {
+                navController.navigate("pincode") {
+                    // Этот блок может использоваться для настройки дополнительных параметров навигации, если нужно
+                    popUpTo("codeVerification") { inclusive = true } // Удаляем экран верификации из стека
+                }
                 // Код успешно проверен
                 println("Код проверен успешно")
-                navigateToPinCodeScreen() // Переход к следующему экрану
+                 // Переход к следующему экрану
             } else {
                 // Ошибка в проверке кода
                 showError("Неверный код")
@@ -222,9 +243,7 @@ fun showError(message: String) {
 }
 
 // Переход на экран для ввода PIN-кода
-fun navigateToPinCodeScreen() {
-    // Логика для перехода на экран PIN-кода
-}
+
 
 // CodeInputField remains the same
 

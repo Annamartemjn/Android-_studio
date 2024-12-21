@@ -13,9 +13,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import com.example.controls.ui.theme.Components.TextButton
 import com.example.controls.ui.theme.Components.TextInput
 import com.example.pr30.ui.components.PrimaryButton
+import com.example.smartlab.ui.loyat.PinCodeScreen
+import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.*
+import com.example.smartlab.ui.loyat.Main
+import com.example.smartlab.ui.rep.MainViewModel
 
 @Composable
 fun CreatePatient(modifier: Modifier = Modifier) {
@@ -26,6 +36,22 @@ fun CreatePatient(modifier: Modifier = Modifier) {
     var birthDate by remember { mutableStateOf("") }
     var gender by remember { mutableStateOf("") }
     val genders = listOf("Мужской", "Женский")
+
+    val navController = rememberNavController()
+    // Указываем startDestination, который будет первым экраном при запуске
+    NavHost(navController = navController, startDestination = "CreatePatient") {
+        composable("CreatePatient") {
+            CreatePatient() // Экран верификации кода
+        }
+        composable("Main") {
+            val viewModel: MainViewModel = viewModel()
+            Main(
+                viewModel = viewModel,
+                modifier = TODO(),
+                navController = TODO()
+            ) // Главный экран
+        }
+    }
 
     var expanded by remember { mutableStateOf(false) }
 
@@ -138,7 +164,10 @@ fun CreatePatient(modifier: Modifier = Modifier) {
             text = "Создать",
             enable = isButtonEnabled,
             onClick = {
-                // Логика обработки создания карты
+                navController.navigate("Main") {
+                    // Этот блок может использоваться для настройки дополнительных параметров навигации, если нужно
+                    popUpTo("CreatePatient") { inclusive = true } // Удаляем экран верификации из стека
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

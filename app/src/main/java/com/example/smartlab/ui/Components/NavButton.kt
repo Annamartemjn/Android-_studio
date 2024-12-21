@@ -32,7 +32,7 @@ fun NavButton(modifier: Modifier = Modifier) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(88.dp)
+            .height(110.dp)
             .background(Color.White)
     ){
 
@@ -44,14 +44,13 @@ fun NavButton(modifier: Modifier = Modifier) {
                     .background(Color.White),
                 shape = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(0.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F5F9)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             ) {
-                Column(
-                ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Image(
                         bitmap = ImageBitmap.imageResource(R.drawable.analiz),
                         contentDescription = "Analix",
-                        alignment = Alignment.Center,
+
                         modifier = Modifier.size(32.dp)
                     )
                     Text(
@@ -73,17 +72,16 @@ fun NavButton(modifier: Modifier = Modifier) {
                 .background(Color.White),
             shape = RoundedCornerShape(8.dp),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F5F9)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         ) {
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     bitmap = ImageBitmap.imageResource(R.drawable.result),
-                    alignment = Alignment.Center,
                     contentDescription = "Back",
                     modifier = Modifier.size(32.dp)
                 )
                 Text(
-                    text = "Анализы",
+                    text = "Результаты",
                     modifier = Modifier,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
@@ -100,17 +98,16 @@ fun NavButton(modifier: Modifier = Modifier) {
                 .background(Color.White),
             shape = RoundedCornerShape(8.dp),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F5F9)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         ) {
-            Column {
+            Column (horizontalAlignment = Alignment.CenterHorizontally){
                 Image(
                     bitmap = ImageBitmap.imageResource(R.drawable.support),
-                    alignment = Alignment.Center,
                     contentDescription = "Back",
                     modifier = Modifier.size(32.dp)
                 )
                 Text(
-                    text = "Анализы",
+                    text = "Поддержка",
                     modifier = Modifier,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
@@ -127,17 +124,16 @@ fun NavButton(modifier: Modifier = Modifier) {
                 .background(Color.White),
             shape = RoundedCornerShape(8.dp),
             contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF5F5F9)),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
         ) {
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     bitmap = ImageBitmap.imageResource(R.drawable.user),
-                    alignment = Alignment.Center,
                     contentDescription = "Back",
                     modifier = Modifier.size(32.dp)
                 )
                 Text(
-                    text = "Анализы",
+                    text = "Профиль",
                     modifier = Modifier,
                     textAlign = TextAlign.Center,
                     fontSize = 12.sp,
